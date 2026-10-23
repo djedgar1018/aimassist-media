@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aim Assist AI</title>
+<meta name="description" content="@aimassistai: one builder, a team of AI agents, built in public. Aim Assist app waitlist, paper-trading track record, and AI lead systems for local businesses.">
+<meta name="theme-color" content="#05060f">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;600;700&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#05060f;--card:#0b1030;--ink:#f7f9ff;--ink2:#cfe9ff;--mut:#9fb3d9;--line:rgba(122,208,255,.18);--line2:rgba(122,208,255,.34);
+--gold:#ffe14d;--gold2:#ffb020;--pos:#3ddc97;--neg:#ff5a5f;--disp:"Bricolage Grotesque","Helvetica Neue",Helvetica,Arial,sans-serif;--body:"Figtree","Helvetica Neue",Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden;background:
+radial-gradient(900px 520px at 85% -10%,rgba(60,80,200,.36),transparent 62%),radial-gradient(700px 460px at -10% 30%,rgba(40,120,220,.18),transparent 60%),linear-gradient(180deg,#070a1c,#05060f 70%)}
+.wrap{max-width:620px;margin:0 auto;padding:22px 16px 56px}
+h1,h2{font-family:var(--disp);margin:0;letter-spacing:-.02em;text-wrap:balance}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
+.top{display:flex;align-items:center;gap:14px}
+.top img{width:64px;height:64px;border-radius:50%;border:2px solid var(--line2);background:#0b1030;mix-blend-mode:screen;image-rendering:pixelated}
+.handle{font:800 1.05rem/1.2 var(--disp)}
+.tag{color:var(--mut);font-size:.92rem}
+h1{font-size:clamp(2rem,9vw,2.9rem);font-weight:800;line-height:1;margin:22px 0 10px}
+h1 em{font-style:normal;color:var(--gold)}
+.lede{color:var(--ink2);margin:0 0 18px}
+.disc{border:2px solid var(--gold);border-radius:16px;padding:14px 16px;background:linear-gradient(180deg,rgba(255,225,77,.13),rgba(255,176,32,.05));margin:0 0 22px}
+.disc p{margin:0;font:700 1rem/1.4 var(--disp)}
+.disc small{display:block;margin-top:6px;color:var(--ink2);font:400 .92rem/1.45 var(--body)}
+.card{border:1px solid var(--line);border-radius:20px;padding:20px 18px;margin:0 0 16px;background:linear-gradient(170deg,rgba(16,23,69,.8),rgba(8,12,36,.88));box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.kicker{font:800 .72rem/1 var(--disp);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+h2{font-size:1.5rem;font-weight:800;line-height:1.12;margin-bottom:8px}
+.card p{margin:0 0 12px;color:var(--ink2)}
+ul{margin:4px 0 14px;padding-left:0;list-style:none}
+li{position:relative;padding:6px 0 6px 26px;color:var(--ink);border-top:1px solid rgba(122,208,255,.08)}
+li:first-child{border-top:0}
+li::before{content:"";position:absolute;left:4px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--pos);box-shadow:0 0 8px var(--pos)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;padding:14px 18px;border-radius:99px;font:800 1.05rem/1.1 var(--disp);
+text-decoration:none;color:#111;background:linear-gradient(90deg,var(--gold),var(--gold2));box-shadow:0 0 28px rgba(255,200,40,.35);border:0}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line2);box-shadow:none}
+.btn[aria-disabled="true"]{background:rgba(255,255,255,.08);color:var(--mut);box-shadow:none;cursor:default}
+.note{font-size:.85rem;color:var(--mut);margin:10px 0 0}
+.price{font:800 1.15rem/1.3 var(--disp);color:var(--ink);margin:0 0 6px}
+footer{margin-top:28px;color:var(--mut);font-size:.84rem;line-height:1.5}
+footer h3{font:800 .8rem/1 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px}
+footer p{margin:0 0 10px}
+</style></head>
+<body><div class="wrap">
+
+<header class="top">
+  <img src="track-record/agent-sprite.png" alt="" width="64" height="64">
+  <div><div class="handle">@aimassistai</div><div class="tag">One builder. A team of AI agents. Built in public.</div></div>
+</header>
+
+<h1>AI agents that do the <em>busywork</em>.</h1>
+<p class="lede">I run trading research, ship iOS apps and build lead systems with a team of AI agents. Here is everything I link to from my reels.</p>
+
+<div class="disc" role="note">
+  <p>All trading shown is paper trading (a simulated account). Not investment advice.</p>
+  <small>Backtests use past data. Past results, simulated or real, do not predict future results. Nothing here is an offer to manage money.</small>
+</div>
+
+<section class="card" id="waitlist" aria-labelledby="h-app">
+  <div class="kicker">Aim Assist app</div>
+  <h2 id="h-app">Join the Aim Assist waitlist</h2>
+  <p>The AI trading co-pilot I'm building in public, for traders and AI builders. Join the list to hear first when new features open up.</p>
+  <a class="btn" id="btn-waitlist" href="#" data-link="waitlist">Join the waitlist</a>
+  <p class="note" id="note-waitlist"></p>
+</section>
+
+<section class="card" id="record" aria-labelledby="h-rec">
+  <div class="kicker">Track record</div>
+  <h2 id="h-rec">See the paper-trading record</h2>
+  <p>Every closed trade from my bots' paper account, updated from the real logs. Wins and losses both stay on the page.</p>
+  <a class="btn alt" href="track-record/">Open the paper track record</a>
+  <p class="note">Simulated account. Not real money. Not investment advice.</p>
+</section>
+
+<section class="card" id="business" aria-labelledby="h-biz">
+  <div class="kicker">AI for your business</div>
+  <h2 id="h-biz">Never-Miss-a-Lead System</h2>
+  <p>For owner-run service businesses (HVAC, plumbing and similar) that lose jobs to missed calls and slow follow-up. I build and run it for you.</p>
+  <ul>
+    <li>Missed-call text-back: a caller you missed gets a text in about 60 seconds.</li>
+    <li>Speed-to-lead: website and Google leads get a reply within 60 seconds, and you get an alert.</li>
+    <li>AI booking assistant: asks 3 qualifying questions and books onto your calendar, and hands off to a person when unsure.</li>
+    <li>Review requests after each finished job.</li>
+    <li>A 1-page monthly report: missed calls caught, replies, bookings, reviews requested.</li>
+  </ul>
+  <p class="price">Flat $1,997/month, month-to-month.</p>
+  <p>No percentage of your revenue. You own your accounts, your phone number and your customer data.</p>
+  <a class="btn" id="btn-booking" href="#" data-link="booking">Book a 15-minute call</a>
+  <p class="note" id="note-booking"></p>
+  <p class="note">No specific number of leads, jobs or revenue is promised. Results depend on your call volume and follow-through.</p>
+</section>
+
+<footer>
+  <h3>Disclosures</h3>
+  <p>Trading content on @aimassistai and this site shows paper trading on a simulated broker account and backtests on historical data. It is for education and entertainment, not investment advice, and not a recommendation to buy or sell anything. Trading involves risk of loss.</p>
+  <p>Some content is produced with AI tools, including an AI-generated version of my voice in reels.</p>
+  <p>Questions: send a DM to @aimassistai on Instagram.</p>
+</footer>
+</div>
+<script>
+// TODO(DJ): paste your two links here, then commit. Empty = button shows "opening soon" instead of a dead link.
+const LINKS = {
+  waitlist: "",   // e.g. a free Google Form or Tally form URL for the Aim Assist waitlist
+  booking: ""     // e.g. a free Calendly 15-minute event URL
+};
+for (const a of document.querySelectorAll("[data-link]")) {
+  const k = a.dataset.link, url = LINKS[k];
+  if (url && /^https:\/\//.test(url)) { a.href = url; a.rel = "noopener"; a.target = "_blank"; }
+  else { a.removeAttribute("href"); a.setAttribute("aria-disabled", "true"); a.textContent = k === "waitlist" ? "Waitlist opens soon" : "Booking opens soon";
+         document.getElementById("note-" + k).textContent = "DM @aimassistai on Instagram in the meantime."; }
+}
+</script>
+</body></html>

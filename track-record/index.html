@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Paper Trading Track Record</title>
+<meta name="description" content="Live paper-trading record of an AI-run system of independent, rules-based strategies. Simulated account, not real money.">
+<meta name="theme-color" content="#05060f">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght%4012..96,700;12..96,800&family=Figtree:wght%40400;600;700&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#05060f;--bg2:#070a1c;--card:#0b1030;--card2:#101745;--ink:#f7f9ff;--ink2:#cfe9ff;--mut:#9fb3d9;--line:rgba(122,208,255,.16);--line2:rgba(122,208,255,.3);--gold:#ffe14d;--gold2:#ffb020;--pos:#3ddc97;--neg:#ff6b70;--blue:#7ad0ff;--pink:#ff9ec4;
+--disp:"Bricolage Grotesque","Helvetica Neue",Helvetica,Arial,sans-serif;--body:"Figtree","Helvetica Neue",Helvetica,Arial,sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+background:radial-gradient(1100px 620px at 78% -8%,rgba(60,80,200,.38),transparent 62%),radial-gradient(800px 500px at -10% 18%,rgba(40,120,220,.2),transparent 60%),linear-gradient(180deg,#070a1c 0%,#05060f 60%,#04050c 100%);background-color:var(--bg)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.55;background-image:radial-gradient(1px 1px at 12% 22%,#fff8,transparent),radial-gradient(1px 1px at 68% 12%,#fff6,transparent),radial-gradient(1.5px 1.5px at 88% 46%,#cfe9ff88,transparent),radial-gradient(1px 1px at 32% 70%,#fff5,transparent),radial-gradient(1px 1px at 52% 88%,#fff6,transparent),radial-gradient(1.5px 1.5px at 6% 62%,#ffe14d66,transparent)}
+::selection{background:var(--gold);color:#05060f}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:18px 16px 56px}
+h1,h2,h3{font-family:var(--disp);margin:0;text-wrap:balance}
+h2{font-size:clamp(1.5rem,4.6vw,2.1rem);font-weight:800;letter-spacing:-.02em;margin:56px 0 6px;line-height:1.1}
+h2 em{font-style:normal;color:var(--gold)}
+.lede{color:var(--mut);margin:0 0 18px;max-width:62ch}
+.sub{color:var(--mut);font-size:.85rem}
+.pos{color:var(--pos)}.neg{color:var(--neg)}.flat{color:var(--ink2)}
+.num{font-variant-numeric:tabular-nums}
+.tri{display:inline-block;width:.5em;height:.44em;margin-right:.28em;background:currentColor;vertical-align:.06em;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.tri.dn{clip-path:polygon(0 0,100% 0,50% 100%)}
+.ic{flex:none}
+/* top bar */
+.bar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:8px;font:800 .72rem/1 var(--disp);letter-spacing:.09em;text-transform:uppercase;color:var(--ink);padding:9px 14px;border-radius:99px;border:1px solid var(--line2);background:rgba(11,16,48,.8);box-shadow:0 0 24px rgba(122,208,255,.18)}
+.live{width:8px;height:8px;border-radius:50%;background:var(--neg);box-shadow:0 0 10px var(--neg);animation:pulse 1.8s ease-in-out infinite}
+.stamp{font-size:.86rem;color:var(--ink2)}
+.stamp b{color:var(--ink);font-weight:700}
+/* hero */
+.hero{position:relative;margin-top:16px;border-radius:24px;border:1px solid var(--line2);padding:22px 20px 24px;overflow:hidden;background:radial-gradient(520px 320px at 88% 10%,rgba(122,208,255,.16),transparent 70%),linear-gradient(160deg,rgba(20,26,66,.92),rgba(7,10,28,.92));box-shadow:0 24px 70px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.02) inset,0 0 60px rgba(60,100,255,.12)}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:6px}
+.agent{position:absolute;right:-6px;top:6px;width:104px;height:104px;pointer-events:none}
+.agent img{width:100%;height:100%;display:block;mix-blend-mode:screen;image-rendering:pixelated;animation:bob 4.5s ease-in-out infinite}
+.rings{display:none}
+h1{font-size:clamp(2.35rem,10.5vw,4.4rem);font-weight:800;letter-spacing:-.035em;line-height:.98;margin:46px 0 12px;max-width:11ch}
+h1 span{color:var(--gold)}
+.vp{font-size:clamp(1.02rem,3.9vw,1.25rem);color:var(--ink2);max-width:36ch;margin:0 0 22px;line-height:1.4}
+.bignum{display:flex;align-items:baseline;font:800 clamp(2.9rem,13.4vw,6rem)/1 var(--disp);letter-spacing:-.035em;font-variant-numeric:tabular-nums;text-shadow:0 0 34px currentColor;margin:4px 0 6px;white-space:nowrap}
+.bignum.pos,.bignum.flat{color:var(--gold);text-shadow:0 0 36px rgba(255,225,77,.4)}
+.bignum.neg{color:var(--neg);text-shadow:0 0 36px rgba(255,90,95,.4)}
+.bignum .tri{width:.36em;height:.32em;margin-right:.12em;color:var(--pos);filter:drop-shadow(0 0 8px var(--pos))}
+.bignum.neg .tri{color:var(--neg)}
+.biglab{font:700 .8rem/1.3 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+/* disclaimer: prominent, never fine print */
+.disc{position:relative;margin:16px 0 0;padding:16px 18px;border-radius:16px;border:2px solid var(--gold);background:linear-gradient(180deg,rgba(255,225,77,.13),rgba(255,176,32,.06));box-shadow:0 0 40px rgba(255,225,77,.12)}
+.disc-text{margin:0;font:700 1.08rem/1.4 var(--disp);color:var(--ink)}
+.disc p{margin:10px 0 0;color:var(--ink2);font-size:1rem}
+.disc strong{color:var(--gold)}
+/* panels */
+.panel{position:relative;border-radius:20px;border:1px solid var(--line);background:linear-gradient(170deg,rgba(16,23,69,.78),rgba(8,12,36,.86));box-shadow:0 18px 50px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.05) inset}
+.chartpanel{padding:16px 12px 14px;margin-top:14px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.84rem;color:var(--ink2);padding:0 6px 8px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:18px;height:3px;border-radius:2px;background:var(--pos);box-shadow:0 0 8px var(--pos)}
+.sw.dd{height:10px;width:18px;border-radius:3px;background:rgba(255,90,95,.45);box-shadow:none;border:1px solid rgba(255,90,95,.7)}
+.sw.d1{width:0;height:12px;border-left:2px dashed var(--gold);border-radius:0;background:none;box-shadow:none}
+.plot{position:relative}
+#chart{width:100%;height:300px;display:block;touch-action:pan-y;cursor:crosshair}
+#chart text{fill:var(--mut);font:600 11px var(--body)}
+#chart .flag{fill:var(--gold);font:800 11px var(--disp);letter-spacing:.06em}
+#chart .pulse{transform-box:fill-box;transform-origin:center;animation:ring 2s ease-out infinite}
+.tip{position:absolute;pointer-events:none;background:rgba(5,6,15,.96);border:1px solid var(--line2);border-radius:12px;padding:9px 12px;font-size:.84rem;box-shadow:0 12px 30px rgba(0,0,0,.6);display:none;white-space:nowrap;z-index:3;line-height:1.35}
+.tip b{display:block;font:800 1.15rem var(--disp);font-variant-numeric:tabular-nums}
+.tip small{color:var(--mut);font-size:.78rem}
+.cap{padding:6px 8px 0;margin:0}
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.tile{position:relative;padding:14px 14px 13px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(170deg,rgba(16,23,69,.8),rgba(8,12,36,.9));transition:transform .35s var(--ease),border-color .35s,box-shadow .35s;overflow:hidden}
+.tile:hover{transform:translateY(-3px);border-color:var(--line2);box-shadow:0 14px 34px rgba(0,0,0,.5),0 0 30px rgba(122,208,255,.12)}
+.tile .ic{color:var(--blue);filter:drop-shadow(0 0 6px rgba(122,208,255,.6));transition:transform .35s var(--ease)}
+.tile:hover .ic{transform:scale(1.15) rotate(-6deg)}
+.tl{font:700 .7rem/1.2 var(--disp);letter-spacing:.09em;text-transform:uppercase;color:var(--mut);margin-top:10px}
+.tv{font:800 clamp(1.5rem,6.4vw,2rem)/1.1 var(--disp);font-variant-numeric:tabular-nums;margin-top:4px;letter-spacing:-.02em;white-space:nowrap}
+.ts{font-size:.78rem;color:var(--mut);margin-top:3px;min-height:1.2em}
+/* strategies */
+.cards{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:14px}
+.sc{padding:16px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(170deg,rgba(16,23,69,.8),rgba(8,12,36,.92));transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
+.sc:hover{transform:translateY(-3px);border-color:var(--line2);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.sc.idle{background:linear-gradient(170deg,rgba(11,16,48,.55),rgba(8,12,36,.6))}
+.sc-top{display:flex;flex-direction:column-reverse;gap:10px;align-items:flex-start}
+.sc h3{font-size:1.12rem;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.fam{color:var(--mut);font-size:.82rem;margin-top:2px}
+.badge{display:inline-flex;align-items:center;gap:7px;font:700 .72rem/1 var(--disp);letter-spacing:.05em;text-transform:uppercase;padding:7px 10px;border-radius:99px;border:1px solid var(--line2);color:var(--mut)}
+.badge.on{color:var(--pos);border-color:rgba(61,220,151,.5);background:rgba(61,220,151,.08)}
+.badge.on::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--pos);box-shadow:0 0 8px var(--pos);animation:pulse 1.8s ease-in-out infinite}
+.sc-pnl{font:800 1.9rem/1 var(--disp);letter-spacing:-.02em;margin:14px 0 4px;font-variant-numeric:tabular-nums}
+.sc-meta{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:.84rem;color:var(--ink2)}
+.sc-meta b{color:var(--ink);font-variant-numeric:tabular-nums}
+.strip{display:block;width:100%;height:40px;margin-top:12px}
+.strip .w{fill:var(--pos)}.strip .l{fill:var(--neg)}.strip .base{stroke:var(--line2);stroke-width:1;stroke-dasharray:2 3}
+.strip.empty{display:flex;align-items:center;height:40px;border:1px dashed var(--line2);border-radius:10px;padding:0 12px;color:var(--mut);font-size:.8rem}
+.sumbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;padding:12px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(11,16,48,.6);font-size:.95rem}
+.sumbar b{font-variant-numeric:tabular-nums}
+/* rules */
+.rules{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+.rule{position:relative;padding:20px 18px 18px;border-radius:22px;border:1px solid rgba(255,225,77,.4);background:radial-gradient(300px 160px at 15% 0%,rgba(255,225,77,.16),transparent 70%),linear-gradient(170deg,rgba(24,28,70,.95),rgba(8,12,36,.95));box-shadow:0 0 36px rgba(255,225,77,.1),0 16px 40px rgba(0,0,0,.45);overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s}
+.rule:hover{transform:translateY(-4px);box-shadow:0 0 52px rgba(255,225,77,.22),0 20px 44px rgba(0,0,0,.5)}
+.rule .ic{color:var(--gold);filter:drop-shadow(0 0 8px rgba(255,225,77,.7))}
+.rv{font:800 clamp(3.2rem,15vw,4.6rem)/1 var(--disp);letter-spacing:-.04em;color:var(--gold);text-shadow:0 0 30px rgba(255,225,77,.4);margin:6px 0 2px}
+.rule h3{font-size:1.05rem;font-weight:800;margin-bottom:4px}
+.rule p{margin:0;color:var(--ink2);font-size:.92rem}
+/* trades table */
+details{margin-top:16px}
+summary{cursor:pointer;display:inline-flex;align-items:center;gap:10px;font:800 .95rem var(--disp);color:var(--gold);padding:11px 18px;border-radius:99px;border:1px solid rgba(255,225,77,.45);background:rgba(255,225,77,.07);list-style:none;transition:background .25s,box-shadow .25s}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .3s var(--ease)}
+details[open] summary::after{transform:rotate(-135deg)}
+summary:hover{background:rgba(255,225,77,.14);box-shadow:0 0 24px rgba(255,225,77,.2)}
+.tscroll{margin-top:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 8px;scrollbar-color:var(--line2) transparent}
+.tscroll::-webkit-scrollbar{height:8px}.tscroll::-webkit-scrollbar-thumb{background:var(--line2);border-radius:8px}
+table{width:100%;min-width:560px;border-collapse:collapse;font-size:.92rem}
+th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{font:700 .7rem var(--disp);letter-spacing:.09em;text-transform:uppercase;color:var(--mut)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tbody tr:hover{background:rgba(122,208,255,.06)}
+/* method + footer */
+.how{margin-top:14px;padding:18px;border-radius:20px;border:1px solid var(--line);background:rgba(11,16,48,.5);color:var(--ink2)}
+.how p{margin:0 0 10px;max-width:70ch}.how p:last-child{margin:0}
+.how b{color:var(--ink)}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font-size:.88rem}
+/* motion */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes ring{0%{transform:scale(1);opacity:.8}100%{transform:scale(3.2);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.js .rv-in{opacity:0;transform:translateY(16px)}
+.js .rv-in.in{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0s)}
+@media (min-width:640px){
+ .tiles{grid-template-columns:repeat(3,1fr);gap:12px}
+ .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .rules{grid-template-columns:repeat(3,1fr)}
+ #chart{height:340px}
+ .chartpanel{padding:20px 18px 16px}
+ .hero{padding:34px 34px 34px}
+}
+@media (min-width:900px){
+ .wrap{padding-top:26px}
+ .hero-grid{grid-template-columns:1.25fr .75fr;align-items:center;gap:20px}
+ .agent{position:relative;right:auto;top:auto;width:100%;max-width:300px;height:auto;aspect-ratio:1;justify-self:center}
+ .rings{display:block;position:absolute;left:50%;bottom:14%;width:96%;height:26%;transform:translateX(-50%);border-radius:50%;border:2px solid rgba(122,208,255,.5);box-shadow:0 0 30px rgba(122,208,255,.4),inset 0 0 30px rgba(122,208,255,.25)}
+ .rings::after{content:"";position:absolute;inset:22%;border-radius:50%;border:2px solid rgba(255,158,196,.55)}
+ h1{margin-top:30px}
+ .cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .tiles{grid-template-columns:repeat(6,1fr)}
+ .tv{font-size:1.55rem}
+}
+@media (prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .js .rv-in{opacity:1;transform:none}
+}
+</style></head><body><div class="wrap">
+
+<div class="bar"><span class="chip"><span class="live" aria-hidden="true"></span>Real system &middot; running today</span>
+<span class="stamp">Paper account &middot; updated <b>Oct 23, 2026, 2:01 PM CT</b></span></div>
+
+<section class="hero" aria-labelledby="h1"><div class="hero-grid"><div>
+<h1 id="h1">Every trade. <span>In public.</span></h1>
+<p class="vp">An AI-run system of independent strategies, held to strict risk rules.</p>
+<div class="rv-in"><div class="bignum pos"><i class="tri up" aria-hidden="true"></i><span data-count data-val="4822.66" data-kind="signed">+$4,822.66</span></div>
+<div class="biglab">Total P&amp;L &middot; closed trades &middot; paper account</div></div>
+</div>
+<div class="agent" aria-hidden="true"><div class="rings"></div><img src="agent-sprite.png" alt="" width="256" height="256"></div></div></section>
+
+<div class="disc" role="note"><p class="disc-text">Paper trading (simulated account). Not real money. Not investment advice. Past performance does not guarantee future results.</p>
+<p>Record start: <strong>October 22, 2026</strong>. Length: <strong>2 calendar days (1 trading day with closed trades)</strong>.</p><p>This record is only 2 days old and has 2 closed trades. That is far too little to say anything about skill, consistency or future results. Treat every number below as a first data point, not evidence.</p></div>
+
+<h2>The equity <em>curve</em></h2>
+<p class="lede">Cumulative realized P&amp;L of every closed trade, all strategies combined.</p>
+<div class="panel chartpanel rv-in"><div class="legend"><span><i class="sw"></i>Closed-trade P&amp;L</span><span><i class="sw dd"></i>Drawdown from peak</span><span><i class="sw d1"></i>Day 1</span></div>
+<div class="plot"><svg id="chart" tabindex="0" role="img" aria-label="Step chart of cumulative closed-trade P&amp;L in dollars since Day 1, currently +$4,822.66. Use left and right arrow keys to step through trades; every trade is also listed in the table below."></svg><div class="tip" id="tip"></div></div>
+<p class="sub cap">Equity steps only when a trade closes. Open positions are not marked to market. Times are Central (CT).</p></div>
+
+<div class="tiles"><div class="tile rv-in" style="--d:0.00s"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg><div class="tl">Closed trades</div><div class="tv "><span data-count data-val="2" data-kind="int">2</span></div><div class="ts">reconciled fills only</div></div><div class="tile rv-in" style="--d:0.06s"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><div class="tl">Win rate</div><div class="tv "><span data-count data-val="100.0" data-kind="pct">100%</span></div><div class="ts">of 2 trades</div></div><div class="tile rv-in" style="--d:0.12s"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><div class="tl">Best day</div><div class="tv pos"><span><i class="tri up" aria-hidden="true"></i>+$4,822.66</span></div><div class="ts">Oct 22, 2026</div></div><div class="tile rv-in" style="--d:0.18s"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8"/><path d="M14 17h7v-7"/></svg><div class="tl">Worst day</div><div class="tv pos"><span><i class="tri up" aria-hidden="true"></i>+$4,822.66</span></div><div class="ts">Oct 22, 2026 (the only day so far)</div></div><div class="tile rv-in" style="--d:0.24s"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v14"/><path d="M6 11l6 6 6-6"/><path d="M4 21h16"/></svg><div class="tl">Max drawdown</div><div class="tv flat"><span>$0.00</span></div><div class="ts">peak to trough, closed trades</div></div><div class="tile rv-in" style="--d:0.30s"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><div class="tl">Strategies live</div><div class="tv "><span>2/8</span></div><div class="ts">have closed a trade</div></div></div>
+
+<h2>Strategy by strategy</h2>
+<p class="lede">Independent strategies, each with its own record. Described by type only.</p>
+<div class="cards"><article class="sc rv-in " style="--d:0.00s"><div class="sc-top"><div><h3>Index breakout</h3><div class="fam">Equity-index futures</div></div><span class="badge on">Active, paper</span></div><div class="sc-pnl pos"><i class="tri up" aria-hidden="true"></i>+$345.26</div><div class="sc-meta"><span><b>1</b> trade</span><span>Win rate <b>100%</b></span><span>Size <b>1 contract</b></span></div><svg class="strip" viewBox="0 0 120 36" preserveAspectRatio="xMinYMid meet" role="img" aria-label="1 closed trade, one bar each, up is a win, down is a loss"><line x1="0" x2="120" y1="18" y2="18" class="base"/><rect x="4.0" y="3.0" width="16.0" height="15.0" rx="2" class="w"/></svg></article><article class="sc rv-in " style="--d:0.06s"><div class="sc-top"><div><h3>Index breakout, larger size</h3><div class="fam">Equity-index futures</div></div><span class="badge on">Active, paper</span></div><div class="sc-pnl pos"><i class="tri up" aria-hidden="true"></i>+$4,477.40</div><div class="sc-meta"><span><b>1</b> trade</span><span>Win rate <b>100%</b></span><span>Size <b>15 contracts</b></span></div><svg class="strip" viewBox="0 0 120 36" preserveAspectRatio="xMinYMid meet" role="img" aria-label="1 closed trade, one bar each, up is a win, down is a loss"><line x1="0" x2="120" y1="18" y2="18" class="base"/><rect x="4.0" y="3.0" width="16.0" height="15.0" rx="2" class="w"/></svg></article><article class="sc rv-in idle" style="--d:0.12s"><div class="sc-top"><div><h3>Momentum after abnormal days</h3><div class="fam">Equity-index futures</div></div><span class="badge off">No closed trades yet</span></div><div class="sc-pnl flat">&ndash;</div><div class="sc-meta"><span><b>0</b> trades</span><span>Win rate <b>&ndash;</b></span></div><div class="strip empty"><span>Waiting for its first closed trade</span></div></article><article class="sc rv-in idle" style="--d:0.18s"><div class="sc-top"><div><h3>Gold overnight</h3><div class="fam">Metals futures</div></div><span class="badge off">No closed trades yet</span></div><div class="sc-pnl flat">&ndash;</div><div class="sc-meta"><span><b>0</b> trades</span><span>Win rate <b>&ndash;</b></span></div><div class="strip empty"><span>Waiting for its first closed trade</span></div></article><article class="sc rv-in idle" style="--d:0.00s"><div class="sc-top"><div><h3>Stock momentum, top 5</h3><div class="fam">US stocks</div></div><span class="badge off">No closed trades yet</span></div><div class="sc-pnl flat">&ndash;</div><div class="sc-meta"><span><b>0</b> trades</span><span>Win rate <b>&ndash;</b></span></div><div class="strip empty"><span>Waiting for its first closed trade</span></div></article><article class="sc rv-in idle" style="--d:0.06s"><div class="sc-top"><div><h3>Crypto event-driven</h3><div class="fam">Crypto</div></div><span class="badge off">No closed trades yet</span></div><div class="sc-pnl flat">&ndash;</div><div class="sc-meta"><span><b>0</b> trades</span><span>Win rate <b>&ndash;</b></span></div><div class="strip empty"><span>Waiting for its first closed trade</span></div></article><article class="sc rv-in idle" style="--d:0.12s"><div class="sc-top"><div><h3>Reverse-split short</h3><div class="fam">US stocks</div></div><span class="badge off">No closed trades yet</span></div><div class="sc-pnl flat">&ndash;</div><div class="sc-meta"><span><b>0</b> trades</span><span>Win rate <b>&ndash;</b></span></div><div class="strip empty"><span>Waiting for its first closed trade</span></div></article><article class="sc rv-in idle" style="--d:0.18s"><div class="sc-top"><div><h3>S&amp;P dip-buy</h3><div class="fam">Equity-index futures</div></div><span class="badge off">No closed trades yet</span></div><div class="sc-pnl flat">&ndash;</div><div class="sc-meta"><span><b>0</b> trades</span><span>Win rate <b>&ndash;</b></span></div><div class="strip empty"><span>Waiting for its first closed trade</span></div></article></div><div class="sumbar"><span>All strategies combined</span><span><b>2</b> trades</span><b class="pos"><i class="tri up" aria-hidden="true"></i>+$4,822.66</b></div>
+<p class="sub" style="margin-top:12px;max-width:70ch">Rules, parameters and instruments queued for future trades are not published. P&amp;L is in dollars at the size each strategy actually traded, net of commissions. "No closed trades yet" means the strategy is configured but has not completed a trade, which is not a result.</p>
+<details><summary>Every closed trade (2)</summary><div class="panel tscroll" tabindex="0" role="region" aria-label="All closed trades, scrolls sideways on small screens"><table><thead><tr><th>Closed</th><th>Strategy</th><th>Instrument family</th><th>Side</th><th class="num">P&amp;L</th></tr></thead><tbody><tr><td>Oct 22, 3:22 PM CT</td><td>Index breakout, larger size</td><td>Equity-index futures</td><td>Short</td><td class="num pos"><i class="tri up" aria-hidden="true"></i>+$4,477.40</td></tr><tr><td>Oct 22, 3:29 PM CT</td><td>Index breakout</td><td>Equity-index futures</td><td>Short</td><td class="num pos"><i class="tri up" aria-hidden="true"></i>+$345.26</td></tr></tbody></table></div></details>
+
+<h2>Risk rules, <em>non-negotiable</em></h2>
+<p class="lede">The system runs under fixed limits. Discipline is the product.</p>
+<div class="rules"><div class="rule rv-in" style="--d:0.00s"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><div class="rv">10%</div><h3>Daily kill switch</h3><p>Trading stops for the day if equity falls 10% from the start-of-day level.</p></div><div class="rule rv-in" style="--d:0.08s"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><div class="rv">15%</div><h3>Maximum drawdown</h3><p>A static 15% account stop. Breach it and the evaluation is over.</p></div><div class="rule rv-in" style="--d:0.16s"><svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/></svg><div class="rv">+9%</div><h3>Evaluation target</h3><p>Reach +9% within 6 months (126 trading sessions).</p></div></div>
+<p class="sub" style="margin-top:12px">These are fixed, pre-set evaluation rules for the account, not targets that have been achieved.</p>
+
+<h2>How the numbers are built</h2>
+<div class="how"><p>Only closed trades with a fill that reconciles to the recorded price and contract size are counted. Account resets and bookkeeping closes are excluded: the paper account was reset on October 22, 2026, and that reset is not profit. Unrealized (open) results are left out until the trade closes.</p>
+<p>Rows excluded for failing reconciliation: <b>0</b>. Admin or reset rows excluded: <b>0</b>. No backtests or hypothetical results are shown on this page.</p></div>
+
+<footer>Last updated: Oct 23, 2026, 2:01 PM CT. All times Central. Paper trading (simulated account). Not real money. Not investment advice. Past performance does not guarantee future results.</footer>
+</div>
+<script id="data" type="application/json">{"curve": [{"t": "2026-10-22T09:30:13", "label": "Oct 22, 2026, 9:30 AM CT", "v": 0.0}, {"t": "2026-10-22T15:22:58", "label": "Oct 22, 2026, 3:22 PM CT", "v": 4477.4}, {"t": "2026-10-22T15:29:20", "label": "Oct 22, 2026, 3:29 PM CT", "v": 4822.66}], "now": "2026-10-23T14:01:29"}</script>
+<script>
+(function(){
+var root=document.documentElement;root.classList.add('js');
+var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var P=JSON.parse(document.getElementById('data').textContent),D=P.curve;
+/* reveal + count-up */
+function fmt(v,k){var a=Math.abs(v),s=v<0?'-':(k==='signed'&&v>0?'+':'');
+ if(k==='int')return Math.round(v).toLocaleString('en-US');
+ if(k==='pct')return Math.round(v)+'%';
+ return s+'$'+a.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function count(el){var end=parseFloat(el.dataset.val),k=el.dataset.kind,final=el.textContent;
+ if(RM||isNaN(end)){return}var t0=null,dur=1300;
+ (function step(ts){if(t0===null)t0=ts;var p=Math.min(1,(ts-t0)/dur),e=p===1?1:1-Math.pow(2,-10*p);
+  el.textContent=fmt(end*e,k);if(p<1)requestAnimationFrame(step);else el.textContent=final})(performance.now())}
+var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');
+ e.target.querySelectorAll('[data-count]').forEach(count);if(e.target.hasAttribute('data-count'))count(e.target);io.unobserve(e.target)}})},{threshold:.12}):null;
+document.querySelectorAll('.rv-in').forEach(function(el,i){if(io)io.observe(el);else el.classList.add('in')});
+/* chart */
+var svg=document.getElementById('chart'),tip=document.getElementById('tip'),first=true,sel=-1;
+if(!D.length){svg.outerHTML='<p class="sub" style="padding:24px">No closed trades yet. The curve starts with the first one.</p>';return}
+var NS='http://www.w3.org/2000/svg',MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var xs=D.map(function(p){return Date.parse(p.t+'Z')}),ys=D.map(function(p){return p.v});
+var nowMs=Date.parse(P.now+'Z');
+function dshort(ms){var d=new Date(ms),h=d.getUTCHours(),m=d.getUTCMinutes();
+ return MON[d.getUTCMonth()]+' '+d.getUTCDate()+', '+((h%12)||12)+':'+(m<10?'0':'')+m+' '+(h<12?'AM':'PM')}
+function money(v){return (v<0?'-':(v>0?'+':''))+'$'+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function yl(v){var a=Math.abs(v),s=v<0?'-':'';if(a>=1000)return s+'$'+(a/1000).toFixed(a>=10000?0:1).replace('.0','')+'k';return s+'$'+Math.round(a)}
+function draw(){
+ var W=svg.clientWidth||600,H=svg.clientHeight||300,sm=W<520,m={l:sm?44:54,r:sm?16:22,t:30,b:30};
+ svg.setAttribute('viewBox','0 0 '+W+' '+H);svg.innerHTML='';
+ var x0=xs[0],xe=Math.max(xs[xs.length-1],nowMs);if(xe-x0<6*3.6e6)xe=x0+6*3.6e6;
+ var lo=Math.min(0,Math.min.apply(0,ys)),hi=Math.max(0,Math.max.apply(0,ys));if(hi===lo)hi=lo+1;
+ var pad=(hi-lo)*.14;hi+=pad;if(lo<0)lo-=pad;
+ function X(v){return m.l+(v-x0)/(xe-x0)*(W-m.l-m.r)}function Y(v){return H-m.b-(v-lo)/(hi-lo)*(H-m.t-m.b)}
+ function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
+ var defs=el('defs',{});
+ var g=el('linearGradient',{id:'fillg',x1:0,y1:0,x2:0,y2:1},defs);
+ el('stop',{offset:'0%','stop-color':'#3ddc97','stop-opacity':.42},g);el('stop',{offset:'100%','stop-color':'#3ddc97','stop-opacity':0},g);
+ var f=el('filter',{id:'glow',x:'-20%',y:'-50%',width:'140%',height:'200%'},defs);el('feGaussianBlur',{stdDeviation:5},f);
+ var raw=(hi-lo)/4,pw=Math.pow(10,Math.floor(Math.log10(raw))),fr=raw/pw,st=(fr<=1?1:fr<=2?2:fr<=2.5?2.5:fr<=5?5:10)*pw;
+ for(var v=Math.ceil(lo/st)*st;v<=hi+1e-9;v+=st){var y=Y(v);el('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,stroke:'rgba(122,208,255,.1)','stroke-width':1});
+  var t=el('text',{x:m.l-8,y:y+4,'text-anchor':'end'});t.textContent=yl(v)}
+ el('line',{x1:m.l,x2:W-m.r,y1:Y(0),y2:Y(0),stroke:'rgba(207,233,255,.45)','stroke-width':1,'stroke-dasharray':'4 4'});
+ /* drawdown band: gap between running peak and equity */
+ var peak=0,n=D.length;
+ for(var i=0;i<n;i++){peak=Math.max(peak,ys[i]);var xa=X(xs[i]),xb=X(i<n-1?xs[i+1]:xe);
+  if(peak>ys[i]+1e-9)el('rect',{x:xa,y:Y(peak),width:Math.max(0,xb-xa),height:Y(ys[i])-Y(peak),fill:'rgba(255,90,95,.32)',stroke:'rgba(255,90,95,.8)','stroke-width':1,'stroke-dasharray':'3 3'})}
+ /* step path (equity only changes when a trade closes) */
+ var d='M'+X(xs[0]).toFixed(1)+' '+Y(ys[0]).toFixed(1);
+ for(var i=1;i<n;i++)d+=' H'+X(xs[i]).toFixed(1)+' V'+Y(ys[i]).toFixed(1);
+ var xl=X(xs[n-1]),yl_=Y(ys[n-1]);
+ el('path',{d:d+' L'+xl.toFixed(1)+' '+Y(0).toFixed(1)+' L'+X(xs[0]).toFixed(1)+' '+Y(0).toFixed(1)+' Z',fill:'url(#fillg)'});
+ if(X(xe)-xl>2){el('line',{x1:xl,x2:X(xe),y1:yl_,y2:yl_,stroke:'#3ddc97','stroke-width':2,'stroke-dasharray':'2 6','stroke-linecap':'round',opacity:.7})}
+ el('path',{d:d,fill:'none',stroke:'#3ddc97','stroke-width':7,'stroke-linejoin':'round',opacity:.55,filter:'url(#glow)'});
+ var line=el('path',{d:d,fill:'none',stroke:'#7dffc4','stroke-width':2.5,'stroke-linejoin':'round','stroke-linecap':'round',pathLength:1});
+ if(first&&!RM){line.style.strokeDasharray='1';line.style.strokeDashoffset='1';line.getBoundingClientRect();
+  line.style.transition='stroke-dashoffset 1.6s cubic-bezier(.16,1,.3,1)';line.style.strokeDashoffset='0'}
+ first=false;
+ /* Day 1 marker */
+ var dx=X(xs[0]);el('line',{x1:dx,x2:dx,y1:m.t-4,y2:H-m.b,stroke:'#ffe14d','stroke-width':1.5,'stroke-dasharray':'4 4',opacity:.85});
+ var fl=el('text',{x:dx+7,y:m.t+6,'class':'flag'});fl.textContent='DAY 1 · '+dshort(xs[0]).split(',')[0].toUpperCase();
+ el('circle',{cx:dx,cy:Y(ys[0]),r:6,fill:'#05060f',stroke:'#ffe14d','stroke-width':2.5});
+ for(var i=1;i<n;i++)el('circle',{cx:X(xs[i]),cy:Y(ys[i]),r:4.5,fill:'#7dffc4',stroke:'#05060f','stroke-width':2});
+ if(n>1){el('circle',{cx:xl,cy:yl_,r:5,fill:'none',stroke:'#7dffc4','stroke-width':2,'class':'pulse'})}
+ var a=el('text',{x:m.l,y:H-8,'text-anchor':'start'});a.textContent=dshort(xs[0]);
+ var b=el('text',{x:W-m.r,y:H-8,'text-anchor':'end'});b.textContent=(nowMs>=xs[n-1]?'Now · ':'')+dshort(xe);
+ /* hover layer */
+ var cross=el('line',{y1:m.t,y2:H-m.b,stroke:'rgba(255,255,255,.55)','stroke-width':1,opacity:0}),
+     mark=el('circle',{r:7,fill:'none',stroke:'#fff','stroke-width':2,opacity:0});
+ function show(i){sel=i;var px=X(xs[i]),py=Y(ys[i]);cross.setAttribute('x1',px);cross.setAttribute('x2',px);cross.setAttribute('opacity',1);
+  mark.setAttribute('cx',px);mark.setAttribute('cy',py);mark.setAttribute('opacity',1);
+  tip.innerHTML='<b class="'+(ys[i]<0?'neg':(ys[i]>0?'pos':'flat'))+'">'+money(ys[i])+'</b><small>'+(i===0?'Day 1 start':'Trade '+i+' closed')+' · '+D[i].label+'</small>';
+  tip.style.display='block';var r=svg.getBoundingClientRect(),w=tip.offsetWidth;
+  tip.style.left=Math.min(Math.max(px-w/2,4),r.width-w-4)+'px';tip.style.top=Math.max(py-72,2)+'px'}
+ function hide(){sel=-1;cross.setAttribute('opacity',0);mark.setAttribute('opacity',0);tip.style.display='none'}
+ function move(ev){var r=svg.getBoundingClientRect(),px=(ev.clientX-r.left)*W/r.width,bi=0;
+  xs.forEach(function(x,i){if(Math.abs(X(x)-px)<Math.abs(X(xs[bi])-px))bi=i});show(bi)}
+ var hit=el('rect',{x:m.l-6,y:0,width:W-m.l-m.r+12,height:H,fill:'transparent'});
+ hit.addEventListener('pointermove',move);hit.addEventListener('pointerdown',move);hit.addEventListener('pointerleave',hide);
+ svg.onkeydown=function(e){if(e.key==='ArrowRight')show(Math.min(n-1,sel+1));else if(e.key==='ArrowLeft')show(Math.max(0,sel<0?0:sel-1));else if(e.key==='Escape')hide();else return;e.preventDefault()};
+ svg.onblur=hide;
+}
+draw();var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(draw,80)});
+})();
+</script></body></html>
