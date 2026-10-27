@@ -1,105 +1,246 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aim Assist AI</title>
-<meta name="description" content="@aimassistai: one builder, a team of AI agents, built in public. Aim Assist app waitlist, paper-trading track record, and AI lead systems for local businesses.">
-<meta name="theme-color" content="#05060f">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;600;700&display=swap">
+<meta name="description" content="AI agents that do the busywork. Join the Aim Assist waitlist, see the paper track record, or book a call about AI for your business.">
+<meta name="theme-color" content="#04060d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--bg:#05060f;--card:#0b1030;--ink:#f7f9ff;--ink2:#cfe9ff;--mut:#9fb3d9;--line:rgba(122,208,255,.18);--line2:rgba(122,208,255,.34);
---gold:#ffe14d;--gold2:#ffb020;--pos:#3ddc97;--neg:#ff5a5f;--disp:"Bricolage Grotesque","Helvetica Neue",Helvetica,Arial,sans-serif;--body:"Figtree","Helvetica Neue",Helvetica,Arial,sans-serif}
+:root{color-scheme:dark;--bg:#04060d;--glass:#0a1024;--glass2:#070b19;--line:rgba(122,208,255,.14);--line2:rgba(122,208,255,.32);
+--ink:#f2f6ff;--ink2:#b8c7e4;--mut:#7887a6;--cyan:#7ad0ff;--gold:#ffe14d;--gold2:#ffb020;
+--disp:"Bricolage Grotesque","Helvetica Neue",Helvetica,Arial,sans-serif;--sans:"Figtree","Helvetica Neue",Helvetica,Arial,sans-serif;
+--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
 *{box-sizing:border-box}
-html{background:var(--bg)}
-body{margin:0;color:var(--ink);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden;background:
-radial-gradient(900px 520px at 85% -10%,rgba(60,80,200,.36),transparent 62%),radial-gradient(700px 460px at -10% 30%,rgba(40,120,220,.18),transparent 60%),linear-gradient(180deg,#070a1c,#05060f 70%)}
-.wrap{max-width:620px;margin:0 auto;padding:22px 16px 56px}
-h1,h2{font-family:var(--disp);margin:0;letter-spacing:-.02em;text-wrap:balance}
-:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
-.top{display:flex;align-items:center;gap:14px}
-.top img{width:64px;height:64px;border-radius:50%;border:2px solid var(--line2);background:#0b1030;mix-blend-mode:screen;image-rendering:pixelated}
-.handle{font:800 1.05rem/1.2 var(--disp)}
-.tag{color:var(--mut);font-size:.92rem}
-h1{font-size:clamp(2rem,9vw,2.9rem);font-weight:800;line-height:1;margin:22px 0 10px}
-h1 em{font-style:normal;color:var(--gold)}
-.lede{color:var(--ink2);margin:0 0 18px}
-.disc{border:2px solid var(--gold);border-radius:16px;padding:14px 16px;background:linear-gradient(180deg,rgba(255,225,77,.13),rgba(255,176,32,.05));margin:0 0 22px}
-.disc p{margin:0;font:700 1rem/1.4 var(--disp)}
-.disc small{display:block;margin-top:6px;color:var(--ink2);font:400 .92rem/1.45 var(--body)}
-.card{border:1px solid var(--line);border-radius:20px;padding:20px 18px;margin:0 0 16px;background:linear-gradient(170deg,rgba(16,23,69,.8),rgba(8,12,36,.88));box-shadow:0 18px 50px rgba(0,0,0,.4)}
-.kicker{font:800 .72rem/1 var(--disp);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-h2{font-size:1.5rem;font-weight:800;line-height:1.12;margin-bottom:8px}
-.card p{margin:0 0 12px;color:var(--ink2)}
-ul{margin:4px 0 14px;padding-left:0;list-style:none}
-li{position:relative;padding:6px 0 6px 26px;color:var(--ink);border-top:1px solid rgba(122,208,255,.08)}
-li:first-child{border-top:0}
-li::before{content:"";position:absolute;left:4px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--pos);box-shadow:0 0 8px var(--pos)}
-.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;padding:14px 18px;border-radius:99px;font:800 1.05rem/1.1 var(--disp);
-text-decoration:none;color:#111;background:linear-gradient(90deg,var(--gold),var(--gold2));box-shadow:0 0 28px rgba(255,200,40,.35);border:0}
-.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line2);box-shadow:none}
-.btn[aria-disabled="true"]{background:rgba(255,255,255,.08);color:var(--mut);box-shadow:none;cursor:default}
-.note{font-size:.85rem;color:var(--mut);margin:10px 0 0}
-.price{font:800 1.15rem/1.3 var(--disp);color:var(--ink);margin:0 0 6px}
-footer{margin-top:28px;color:var(--mut);font-size:.84rem;line-height:1.5}
-footer h3{font:800 .8rem/1 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px}
-footer p{margin:0 0 10px}
-</style></head>
-<body><div class="wrap">
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+background:radial-gradient(900px 600px at 50% 0%,rgba(40,70,190,.28),transparent 65%),var(--bg)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:10px}
 
-<header class="top">
-  <img src="track-record/agent-sprite.png" alt="" width="64" height="64">
-  <div><div class="handle">@aimassistai</div><div class="tag">One builder. A team of AI agents. Built in public.</div></div>
+/* ---------- hero: a scope that locks on ---------- */
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;padding:40px 16px 56px}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+background-image:linear-gradient(rgba(122,208,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(122,208,255,.06) 1px,transparent 1px);
+background-size:44px 44px;background-position:center;-webkit-mask-image:radial-gradient(circle at 50% 45%,#000 0%,transparent 62%);mask-image:radial-gradient(circle at 50% 45%,#000 0%,transparent 62%)}
+.status{font:500 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.status i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3ddc97;box-shadow:0 0 10px #3ddc97;margin-right:8px;vertical-align:1px;animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{50%{opacity:.35}}
+
+.scope{position:relative;width:min(80vw,440px);aspect-ratio:1}
+.scope::before{content:"";position:absolute;inset:-22%;border-radius:50%;z-index:-1;pointer-events:none;
+background:radial-gradient(circle,rgba(122,208,255,.22) 0%,rgba(60,90,220,.08) 42%,transparent 66%)}
+.bezel{position:absolute;inset:0;width:100%;height:100%;animation:spin 60s linear infinite}
+.bezel text{font:500 11px var(--mono);letter-spacing:.34em;fill:var(--cyan);text-transform:uppercase}
+.bezel .ticks line{stroke:rgba(122,208,255,.38);stroke-width:1}
+.bezel .ticks line.major{stroke:rgba(255,225,77,.9);stroke-width:2}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lens{position:absolute;inset:13%;border-radius:50%;overflow:hidden;
+background:radial-gradient(circle at 50% 38%,#16214a 0%,var(--glass) 48%,#03050c 100%);
+border:1px solid var(--line2);box-shadow:0 0 0 1px rgba(255,255,255,.04),0 0 40px rgba(122,208,255,.28),inset 0 0 50px rgba(0,0,0,.7)}
+.lens::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
+background:linear-gradient(160deg,rgba(255,255,255,.10),transparent 38%)}
+.cross{position:absolute;inset:0;pointer-events:none}
+.cross span{position:absolute;background:linear-gradient(var(--gold),var(--gold2));opacity:.9}
+.cross .t,.cross .b{left:50%;width:2px;height:13%;margin-left:-1px}
+.cross .t{top:4%}.cross .b{bottom:4%}
+.cross .l,.cross .r{top:50%;height:2px;width:13%;margin-top:-1px}
+.cross .l{left:4%}.cross .r{right:4%}
+.lock{position:absolute;inset:19%;pointer-events:none;animation:lock 4.8s ease-in-out infinite}
+.lock b{position:absolute;width:14%;height:14%;border:2px solid var(--gold)}
+.lock b:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.lock b:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.lock b:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.lock b:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+@keyframes lock{0%,100%{transform:scale(1.18);opacity:.25}45%,70%{transform:scale(1);opacity:1}}
+.core{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}
+.core img{width:62px;height:62px;image-rendering:pixelated;mix-blend-mode:screen}
+.name{font:800 clamp(1.25rem,5.4vw,1.7rem)/1 var(--disp);letter-spacing:-.01em}
+.name em{font-style:normal;color:var(--gold)}
+.by{font:500 .68rem/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2)}
+
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.pill{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 22px;border-radius:12px;border:1px solid var(--line2);
+background:rgba(10,16,36,.75);color:var(--ink);text-decoration:none;font:500 .78rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+transition:transform .2s,border-color .2s,background .2s}
+.pill small{color:var(--cyan);font:inherit;opacity:.8}
+.pill:hover{transform:translateY(-2px);border-color:var(--cyan)}
+.pill.hot{background:linear-gradient(180deg,var(--gold),var(--gold2));color:#141414;border-color:transparent;box-shadow:0 0 30px rgba(255,200,40,.32)}
+.pill.hot small{color:#141414;opacity:.6}
+.social a{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;color:var(--ink2);border:1px solid var(--line);transition:color .2s,border-color .2s}
+.social a:hover{color:var(--ink);border-color:var(--line2)}
+.social svg{width:19px;height:19px}
+
+/* ---------- sections ---------- */
+.warn{max-width:920px;margin:0 auto;padding:0 16px}
+.warn p{margin:0;border:1px dashed rgba(255,225,77,.45);border-radius:12px;padding:12px 16px;color:var(--ink2);font:500 .78rem/1.5 var(--mono);text-align:center}
+section.block{max-width:920px;margin:0 auto;padding:92px 16px 20px;scroll-margin-top:8px}
+.eyebrow{font:500 .74rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+.eyebrow b{color:var(--gold);font-weight:500}
+h1,h2{font-family:var(--disp);font-weight:800;letter-spacing:-.025em;margin:0;text-wrap:balance}
+.big{font-size:clamp(2.4rem,8.4vw,4.2rem);line-height:.98;margin:14px 0 14px}
+.big em{font-style:normal;background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--ink2);max-width:560px;margin:0 0 32px}
+.card{position:relative;background:linear-gradient(170deg,rgba(16,24,58,.85),var(--glass2));border:1px solid var(--line);border-radius:20px;padding:30px 24px;box-shadow:0 22px 60px rgba(0,0,0,.45)}
+.card::before,.card::after{content:"";position:absolute;width:18px;height:18px;border:2px solid var(--gold);opacity:.8}
+.card::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-top-left-radius:20px}
+.card::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-bottom-right-radius:20px}
+.card .tag{font:500 .7rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.card h2{font-size:clamp(1.6rem,5vw,2.2rem);line-height:1.05;margin:12px 0 10px}
+.card .lead{color:var(--ink2);margin:0 0 20px;max-width:640px}
+.price{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin:0 0 24px}
+.price span{font:800 2rem/1 var(--disp);color:var(--ink)}
+.price small{font:500 .78rem/1 var(--mono);color:var(--mut);letter-spacing:.06em}
+.split{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}
+@media (min-width:720px){.split{grid-template-columns:1.3fr 1fr}.split .actions{flex-direction:column;align-items:stretch}}
+.inc{font:500 .7rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin:0 0 10px}
+ul{list-style:none;margin:0;padding:0}
+li{position:relative;padding:6px 0 6px 24px;font-size:.95rem;border-top:1px solid rgba(122,208,255,.07)}
+li:first-child{border-top:0}
+li::before{content:"";position:absolute;left:3px;top:13px;width:9px;height:9px;border:1.5px solid var(--gold);border-radius:50%}
+li::after{content:"";position:absolute;left:6.5px;top:16.5px;width:2px;height:2px;background:var(--gold);border-radius:50%}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;border-radius:12px;text-decoration:none;
+font:600 .95rem/1 var(--sans);background:linear-gradient(180deg,var(--gold),var(--gold2));color:#141414;border:1px solid transparent;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line2)}
+.btn[aria-disabled="true"]{background:#1b2340;color:var(--ink2);cursor:default;transform:none}
+.note{color:var(--mut);font-size:.84rem;margin:14px 0 0}
+
+footer{max-width:920px;margin:0 auto;padding:84px 16px 56px;color:var(--mut);font-size:.82rem;line-height:1.55}
+footer h3{font:500 .7rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);margin:0 0 12px}
+footer p{margin:0 0 10px}
+.top{display:inline-block;margin-top:22px;font:500 .72rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);text-decoration:none}
+
+@media (prefers-reduced-motion:reduce){.bezel,.lock,.status i{animation:none}html{scroll-behavior:auto}.pill,.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="status"><i></i>Built in public &middot; @aimassistai</div>
+
+  <div class="scope" role="img" aria-label="Aim Assist AI by DJ Edgar: AI agents, iOS apps, a trading lab, built in public">
+    <svg class="bezel" viewBox="0 0 400 400" aria-hidden="true">
+      <defs><path id="ring" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0"/></defs>
+      <g class="ticks" id="ticks"></g>
+      <text><textPath href="#ring" startOffset="3%">AI agents</textPath></text>
+      <text><textPath href="#ring" startOffset="28%">iOS apps</textPath></text>
+      <text><textPath href="#ring" startOffset="53%">trading lab</textPath></text>
+      <text><textPath href="#ring" startOffset="78%">in public</textPath></text>
+    </svg>
+    <div class="lens">
+      <div class="cross"><span class="t"></span><span class="b"></span><span class="l"></span><span class="r"></span></div>
+      <div class="lock"><b></b><b></b><b></b><b></b></div>
+      <div class="core">
+        <img src="track-record/agent-sprite.png" alt="" width="62" height="62">
+        <div class="name">AIM <em>ASSIST</em></div>
+        <div class="by">by DJ Edgar</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="pills" aria-label="Sections">
+    <a class="pill" href="#waitlist"><small>01</small>Waitlist</a>
+    <a class="pill" href="#record"><small>02</small>Track record</a>
+    <a class="pill hot" href="#business"><small>03</small>Book a call</a>
+  </nav>
+
+  <div class="social">
+    <a href="https://www.instagram.com/aimassistai/" aria-label="Instagram @aimassistai" rel="noopener" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".9" fill="currentColor" stroke="none"/></svg>
+    </a>
+  </div>
 </header>
 
-<h1>AI agents that do the <em>busywork</em>.</h1>
-<p class="lede">I run trading research, ship iOS apps and build lead systems with a team of AI agents. Here is everything I link to from my reels.</p>
+<div class="warn" role="note"><p>All trading shown is paper trading (a simulated account). Not investment advice.</p></div>
 
-<div class="disc" role="note">
-  <p>All trading shown is paper trading (a simulated account). Not investment advice.</p>
-  <small>Backtests use past data. Past results, simulated or real, do not predict future results. Nothing here is an offer to manage money.</small>
-</div>
-
-<section class="card" id="waitlist" aria-labelledby="h-app">
-  <div class="kicker">Aim Assist app</div>
-  <h2 id="h-app">Join the Aim Assist waitlist</h2>
-  <p>The AI trading co-pilot I'm building in public, for traders and AI builders. Join the list to hear first when new features open up.</p>
-  <a class="btn" id="btn-waitlist" href="#" data-link="waitlist">Join the waitlist</a>
-  <p class="note" id="note-waitlist"></p>
+<section class="block" id="business" aria-labelledby="h-biz">
+  <div class="eyebrow"><b>03</b> // AI for your business</div>
+  <h1 class="big" id="h-biz">Never miss a <em>lead</em> again.</h1>
+  <p class="sub">For owner-run service businesses (HVAC, plumbing and similar) that lose jobs to missed calls and slow follow-up. I build it and run it for you.</p>
+  <div class="card">
+    <div class="tag">Never-Miss-a-Lead System</div>
+    <h2>Every caller gets an answer.</h2>
+    <p class="lead">Missed calls get a text back, new leads get a reply in about a minute, and an AI assistant books the job onto your calendar.</p>
+    <div class="price"><span>$1,997/mo</span><small>flat &middot; month-to-month</small></div>
+    <div class="split">
+      <div>
+        <p class="inc">What's included</p>
+        <ul>
+          <li>Missed-call text-back in about 60 seconds</li>
+          <li>Website and Google leads answered within 60 seconds, with an alert to you</li>
+          <li>AI booking assistant: 3 qualifying questions, books to your calendar, hands off to a person when unsure</li>
+          <li>Review requests after each finished job</li>
+          <li>A 1-page monthly report: calls caught, replies, bookings, reviews</li>
+        </ul>
+        <p class="note">No percentage of your revenue. You own your accounts, phone number and customer data. No specific number of leads, jobs or revenue is promised.</p>
+      </div>
+      <div>
+        <div class="actions">
+          <a class="btn" id="btn-booking" href="#" data-link="booking">Book a 15-minute call</a>
+          <a class="btn ghost" href="https://www.instagram.com/aimassistai/" rel="noopener" target="_blank">DM me on Instagram</a>
+        </div>
+        <p class="note" id="note-booking"></p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section class="card" id="record" aria-labelledby="h-rec">
-  <div class="kicker">Track record</div>
-  <h2 id="h-rec">See the paper-trading record</h2>
-  <p>Every closed trade from my bots' paper account, updated from the real logs. Wins and losses both stay on the page.</p>
-  <a class="btn alt" href="track-record/">Open the paper track record</a>
-  <p class="note">Simulated account. Not real money. Not investment advice.</p>
+<section class="block" id="waitlist" aria-labelledby="h-app">
+  <div class="eyebrow"><b>01</b> // The app</div>
+  <h1 class="big" id="h-app">Your AI trading <em>co-pilot</em>.</h1>
+  <p class="sub">Aim Assist is the app I'm building in public, for traders and AI builders.</p>
+  <div class="card">
+    <div class="tag">Early access</div>
+    <h2>Get on the list.</h2>
+    <p class="lead">Hear first when new features open up. One email when there's something to try, nothing else.</p>
+    <div class="actions">
+      <a class="btn" id="btn-waitlist" href="#" data-link="waitlist">Join the waitlist</a>
+      <a class="btn ghost" href="#record">See the track record</a>
+    </div>
+    <p class="note" id="note-waitlist"></p>
+  </div>
 </section>
 
-<section class="card" id="business" aria-labelledby="h-biz">
-  <div class="kicker">AI for your business</div>
-  <h2 id="h-biz">Never-Miss-a-Lead System</h2>
-  <p>For owner-run service businesses (HVAC, plumbing and similar) that lose jobs to missed calls and slow follow-up. I build and run it for you.</p>
-  <ul>
-    <li>Missed-call text-back: a caller you missed gets a text in about 60 seconds.</li>
-    <li>Speed-to-lead: website and Google leads get a reply within 60 seconds, and you get an alert.</li>
-    <li>AI booking assistant: asks 3 qualifying questions and books onto your calendar, and hands off to a person when unsure.</li>
-    <li>Review requests after each finished job.</li>
-    <li>A 1-page monthly report: missed calls caught, replies, bookings, reviews requested.</li>
-  </ul>
-  <p class="price">Flat $1,997/month, month-to-month.</p>
-  <p>No percentage of your revenue. You own your accounts, your phone number and your customer data.</p>
-  <a class="btn" id="btn-booking" href="#" data-link="booking">Book a 15-minute call</a>
-  <p class="note" id="note-booking"></p>
-  <p class="note">No specific number of leads, jobs or revenue is promised. Results depend on your call volume and follow-through.</p>
+<section class="block" id="record" aria-labelledby="h-rec">
+  <div class="eyebrow"><b>02</b> // Track record</div>
+  <h1 class="big" id="h-rec">Wins <em>and</em> losses.</h1>
+  <p class="sub">Every closed trade from my bots' paper account, pulled from the real logs. Nothing gets deleted.</p>
+  <div class="card">
+    <div class="tag">Paper account</div>
+    <h2>The receipts.</h2>
+    <p class="lead">Simulated account, real logs. Open the full record to see each trade, the date and the result.</p>
+    <div class="actions"><a class="btn" href="track-record/">Open the paper track record</a></div>
+    <p class="note">Simulated account. Not real money. Not investment advice.</p>
+  </div>
 </section>
 
 <footer>
   <h3>Disclosures</h3>
-  <p>Trading content on @aimassistai and this site shows paper trading on a simulated broker account and backtests on historical data. It is for education and entertainment, not investment advice, and not a recommendation to buy or sell anything. Trading involves risk of loss.</p>
+  <p>Trading content on @aimassistai and this site shows paper trading on a simulated broker account and backtests on historical data. It is for education and entertainment, not investment advice, and not a recommendation to buy or sell anything. Trading involves risk of loss. Past results, simulated or real, do not predict future results. Nothing here is an offer to manage money.</p>
   <p>Some content is produced with AI tools, including an AI-generated version of my voice in reels.</p>
   <p>Questions: send a DM to @aimassistai on Instagram.</p>
+  <a class="top" href="#top">&uarr; Back to top</a>
 </footer>
-</div>
+
 <script>
+// bezel tick marks: 72 ticks, a gold major tick every 90 degrees
+(function () {
+  const g = document.getElementById("ticks"), ns = "http://www.w3.org/2000/svg";
+  for (let i = 0; i < 72; i++) {
+    const a = i * 5 * Math.PI / 180, major = i % 18 === 0, r1 = 192, r2 = major ? 178 : 186;
+    const l = document.createElementNS(ns, "line");
+    l.setAttribute("x1", 200 + r1 * Math.cos(a)); l.setAttribute("y1", 200 + r1 * Math.sin(a));
+    l.setAttribute("x2", 200 + r2 * Math.cos(a)); l.setAttribute("y2", 200 + r2 * Math.sin(a));
+    if (major) l.setAttribute("class", "major");
+    g.appendChild(l);
+  }
+})();
+
 // TODO(DJ): paste your two links here, then commit. Empty = button shows "opening soon" instead of a dead link.
 const LINKS = {
   waitlist: "",   // e.g. a free Google Form or Tally form URL for the Aim Assist waitlist
@@ -112,4 +253,5 @@ for (const a of document.querySelectorAll("[data-link]")) {
          document.getElementById("note-" + k).textContent = "DM @aimassistai on Instagram in the meantime."; }
 }
 </script>
-</body></html>
+</body>
+</html>
